@@ -13,3 +13,6 @@ def index():
     """Strona główna"""
     return render_template('index.html')
 
+@app.route("/app", methods=['GET', 'POST'])
+def app():
+    pass

@@ -1,41 +1,37 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
+#
+#  modele.py
 
 from peewee import *
 
 baza_plik = 'uczniowie.db'
-baza = SqliteDatabase(baza_plik) #instalacja bazy
+baza = SqliteDatabase(baza_plik)  # instancja bazy
 
-#### MODELE DANYCH
+### MODELE #
 class BazaModel(Model):
     class Meta:
         database = baza
 
+
 class Klasa(BazaModel):
-    
-    klasa = CharField(null=False)
-    roknaboru = IntegerField(default=0)
-    rokmatury = IntegerField(default=0)
-    
+    nazwa = CharField(null=False)
+    rok_naboru = IntegerField(default=0)
+    rok_matury = IntegerField(default=0)
+
+
 class Uczen(BazaModel):
-    
     imie = CharField(null=False)
     nazwisko = CharField(null=False)
     plec = IntegerField()
     klasa = ForeignKeyField(Klasa, related_name='uczniowie')
-        
-class Przedmiot(BazaModel):
-    
-    przedmiot = CharField(null=False)
-    imie_naucz = CharField(null=False)
-    nazwisko_naucz = CharField(null=False)
-    plec_naucz = IntegerField()
-    
-class Ocena(BazaModel):
-    
-    data_d = DateTimeField()
-    uczen = ForeignKeyField(Uczen, related_name='oceny')
-    przedmiot = ForeignKeyField(Przedmiot, related_name='oceny')
-    ocena = DecimalField(null=False)
-    
 
+
+def main(args):
+    baza.connect()
+    baza.create_tables([Klasa, Uczen])
+
+
+if __name__ == '__main__':
+    import sys
+    sys.exit(main(sys.argv))
